@@ -7,10 +7,10 @@ work :
 	vlib work
 
 $(vsim_std_fifo) : std_fifo.v work
-	vlog std_fifo.v +incdir+./..
+	vlog std_fifo.v +incdir+../common
 
 $(vsim_std_fifo_tb) : std_fifo_tb.v work
-	vlog std_fifo_tb.v +incdir+./..
+	vlog std_fifo_tb.v +incdir+../common
 
 cleanVsim :
 	rm -rf work transcript
