@@ -4,6 +4,7 @@ module std_fifo(rst, clk, push, pop, d, q, full, empty, count, almost_empty, alm
     parameter DEPTH_ADDR_WIDTH = log2(DEPTH-1);
     parameter ALMOST_EMPTY_COUNT = 1;
     parameter ALMOST_FULL_COUNT = 1;
+    parameter LATENCY = 1;
     input rst;
     input clk;
     input push;
@@ -35,7 +36,11 @@ module std_fifo(rst, clk, push, pop, d, q, full, empty, count, almost_empty, alm
             end
         end
     end
-    assign q = r_q;
+    generate if(LATENCY == 0)
+            assign q = ram[r_end[DEPTH_ADDR_WIDTH-1:0]];
+        else
+            assign q = r_q;
+    endgenerate
     assign empty = (r_end == r_beg);
     assign full = (r_end[DEPTH_ADDR_WIDTH-1:0] == r_beg[DEPTH_ADDR_WIDTH-1:0]) && (r_end[DEPTH_ADDR_WIDTH] != r_beg[DEPTH_ADDR_WIDTH]);
     assign count = r_beg - r_end;
