@@ -47,16 +47,18 @@ module std_fifo(rst, clk, push, pop, d, q, full, empty, count, almost_empty, alm
     assign almost_empty = (count < (1+ALMOST_EMPTY_COUNT));
     assign almost_full = (count > (DEPTH-1-ALMOST_FULL_COUNT));
 
+    // synthesis translate_off
     always @(posedge clk) begin
         if(full && push) begin
-            $display("ERROR: %d Overflow at %m", $time);
-            $finish;
+            $display("@verilog:ERROR: %d Overflow at %m rst: %d", $time, rst);
+            //$finish;
         end
         if(empty && pop) begin
-            $display("ERROR: %d underflow at %m", $time);
-            $finish;
+            $display("@verilog:ERROR: %d underflow at %m", $time);
+            //$finish;
         end
     end
+    // synthesis translate_on
 
     `include "log2.vh"
 endmodule
